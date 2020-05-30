@@ -55,13 +55,13 @@ JHOST="r-003"
 JLOG="${HOME}/log-juliet-jupyter.txt"
 JMOUNT="${HOME}/DESKTOP"
 JUSER="<Your FutureSystems User Name on Juliet>"
-juliet="${JUSER}@juliet.futuresystems.org"
+JULIET="${JUSER}@juliet.futuresystems.org"
 # its in dir juliet, please create it first
 
 # FUNTIONS
 function r-port {
     RPORT=`grep "file:" ${JLOG}`
-    ssh -L ${JPORT}:r-003:${JPORT} -i ${RPORT} ${juliet}
+    ssh -L ${JPORT}:r-003:${JPORT} -i ${RPORT} ${JULIET}
 }
 
 function r-open {
@@ -72,29 +72,29 @@ function r-open {
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome "${RHTML}"
 }
 
-alias r-allocate='ssh ${juliet} "salloc -p romeo --reservation=lijguo_11"'
-alias r-install='ssh -t ${juliet} "ssh r-003 \"curl -Ls http://cloudmesh.github.io/get/romeo/tf | sh\""'
-alias romeo='ssh -t ${juliet} "ssh ${JHOST}"'
+alias r-allocate='ssh ${JULIET} "salloc -p romeo --reservation=lijguo_11"'
+alias r-install='ssh -t ${JULIET} "ssh r-003 \"curl -Ls http://cloudmesh.github.io/get/romeo/tf | sh\""'
+alias romeo='ssh -t ${JULIET} "ssh ${JHOST}"'
 
-alias r='ssh -t ${juliet} "ssh ${JHOST}"'
-alias j='ssh ${juliet}'
+alias r='ssh -t ${JULIET} "ssh ${JHOST}"'
+alias j='ssh ${JULIET}'
 
 function r-start-jupyter {
-    echo "pkill -u ${JUSER} jupyter-lab; ~/ENV3/bin/jupyter-lab --port ${JPORT} --ip 0.0.0.0 --no-browser" | ssh ${juliet} "ssh ${JHOST}"
+    echo "pkill -u ${JUSER} jupyter-lab; ~/ENV3/bin/jupyter-lab --port ${JPORT} --ip 0.0.0.0 --no-browser" | ssh ${JULIET} "ssh ${JHOST}"
 }
 
-alias r-ps='echo "ps -aux| fgrep ${JUSER}" | ssh juliet "ssh ${JHOST}"'
-alias r-kill='echo "echo; hostname; echo; pkill -u ${JUSER} jupyter-lab" | ssh ${juliet} "ssh ${JHOST}"'
+alias r-ps='echo "ps -aux| fgrep ${JUSER}" | ssh ${JULIET} "ssh ${JHOST}"'
+alias r-kill='echo "echo; hostname; echo; pkill -u ${JUSER} jupyter-lab" | ssh ${JULIET} "ssh ${JHOST}"'
 
 function r-jupyter {
     rm -f ${JLOG}
     r-start-jupyter 2>&1 | tee ${JLOG}
 }
 
-alias j-mount="cd ${JMOUNT}; sshfs ${juliet}:shared ${juliet} -o auto_cache ; cd ${JMOUNT}/${juliet}"
-alias j-umount="cd ${JMOUNT}; umount ${juliet}"
+alias j-mount="cd ${JMOUNT}; sshfs ${JULIET}:shared ${JULIET} -o auto_cache ; cd ${JMOUNT}/${JULIET}"
+alias j-umount="cd ${JMOUNT}; umount ${JULIET}"
 
-alias p-mount="cd ${HOME}; sshfs ${juliet}:ENV3 RPYTHON -o auto_cache"
+alias p-mount="cd ${HOME}; sshfs ${JULIET}:ENV3 RPYTHON -o auto_cache"
 alias p-umount="cd ${HOME}; umount RPYTHON"
 
 # ##############################################

@@ -27,6 +27,8 @@ class IuCommand(PluginCommand):
                 iu ps
                 iu kill
                 iu status
+                iu lab
+                iu port
                 iu [--user=USERNAME]
                    [--host=HOST]
                    [--node=NUMBER]
@@ -135,6 +137,17 @@ class IuCommand(PluginCommand):
 
             found = iu.ps(config)
             print ("\n".join(found))
+            return ""
+
+        elif arguments.lab:
+
+            found = iu.jupyter(config)
+            # print ("\n".join(found))
+            return ""
+
+        elif arguments.port:
+
+            found = iu.port(config)
             return ""
 
         elif arguments.kill:

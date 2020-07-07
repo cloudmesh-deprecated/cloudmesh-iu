@@ -290,6 +290,16 @@ class Manager(object):
         r = Shell.run(command)
         return r
 
+    def port(self, config):
+        user = config["user"]
+        host = config["host"]
+        gpu = config["gpu"]
+        port = config["port"]
+        command = f"ssh -L {port}:r-003:{port} -i ${port} {user}@juliet.futuresystems.org"
+        os.system(command)
+
+
+
     def config(self, config):
         Console.info("config")
         print (Printer.attribute(config))
@@ -301,13 +311,21 @@ class Manager(object):
 
 
 
-    def jupyter(self, kwargs):
+    def jupyter(self, config):
         Console.info("jupyter")
-        config = kwargs
         print (config)
+
+        port = 5888
 
         user = config["user"]
         host = config["host"]
         gpu = config["gpu"]
 
+        command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} nohup jupyter-lab --port {port} --ip 0.0.0.0 --no-browser | tee ~/lab.txt "'
+
+        print (command)
+        os.system(command)
+        r = None
+        #r = Shell.run(command)
+        #return r
 

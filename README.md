@@ -26,7 +26,7 @@ You will see the jupyter notebook
 * Make sure you have created an ssh key with `ssh-keygen` in a
   shell. On Windows use gitbash and install it the default way on your
   machine. Linux and macOS have the ssh commands build in
-* Upload the public key in `~/.ssh/id_rsa.pu` into the public key
+* Upload the public key in `~/.ssh/id_rsa.pub` into the public key
   field whne going to your futuresystems account and edit it. The
   account information link is placed on the bottom of the page
 * Now you have to wait a while till your key gets populated to juliet
@@ -54,12 +54,14 @@ JPORT="9100"
 JHOST="r-003"
 JLOG="${HOME}/log-juliet-jupyter.txt"
 JMOUNT="${HOME}/DESKTOP"
+JUSER="<Your FutureSystems User Name on Juliet>"
+JULIET="${JUSER}@juliet.futuresystems.org"
 # its in dir juliet, please create it first
 
 # FUNTIONS
 function r-port {
     RPORT=`grep "file:" ${JLOG}`
-    ssh -L ${JPORT}:r-003:${JPORT} -i ${RPORT} juliet
+    ssh -L ${JPORT}:r-003:${JPORT} -i ${RPORT} ${JULIET}
 }
 
 function r-open {
@@ -70,30 +72,29 @@ function r-open {
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome "${RHTML}"
 }
 
-alias r-allocate='ssh juliet "salloc -p romeo --reservation=lijguo_11"'
-alias r-install='ssh -t juliet "ssh r-003 \"curl -Ls http://cloudmesh.github.io/get/romeo/tf | sh\""'
-alias romeo='ssh -t juliet "ssh ${JHOST}"'
+alias r-allocate='ssh ${JULIET} "salloc -p romeo --reservation=lijguo_11"'
+alias r-install='ssh -t ${JULIET} "ssh r-003 \"curl -Ls http://cloudmesh.github.io/get/romeo/tf | sh\""'
+alias romeo='ssh -t ${JULIET} "ssh ${JHOST}"'
 
-alias r='ssh -t juliet "ssh ${JHOST}"'
-alias j='ssh juliet'
+alias r='ssh -t ${JULIET} "ssh ${JHOST}"'
+alias j='ssh ${JULIET}'
 
 function r-start-jupyter {
-    rm -f ${JLOG}
-    echo "pkill jupyter-lab; jupyter-lab --port ${JPORT} --ip 0.0.0.0 --no-browser" | ssh juliet "ssh ${JHOST}"
+    echo "pkill -u ${JUSER} jupyter-lab; ~/ENV3/bin/jupyter-lab --port ${JPORT} --ip 0.0.0.0 --no-browser" | ssh ${JULIET} "ssh ${JHOST}"
 }
 
-alias r-ps='echo "ps -aux| fgrep gvonlasz" | ssh juliet "ssh ${JHOST}"'
-alias r-kill='echo "echo; hostname; echo; pkill jupyter-lab| fgrep gvonlasz" | ssh juliet "ssh $JHOST"'
+alias r-ps='echo "ps -aux| fgrep ${JUSER}" | ssh ${JULIET} "ssh ${JHOST}"'
+alias r-kill='echo "echo; hostname; echo; pkill -u ${JUSER} jupyter-lab" | ssh ${JULIET} "ssh ${JHOST}"'
 
 function r-jupyter {
-    r-kill
+    rm -f ${JLOG}
     r-start-jupyter 2>&1 | tee ${JLOG}
 }
 
-alias j-mount="cd ${JMOUNT}; sshfs juliet:shared juliet -o auto_cache ; cd ${JMOUNT}/juliet"
-alias j-umount="cd ${JMOUNT}; umount juliet"
+alias j-mount="cd ${JMOUNT}; sshfs ${JULIET}:shared ${JULIET} -o auto_cache ; cd ${JMOUNT}/${JULIET}"
+alias j-umount="cd ${JMOUNT}; umount ${JULIET}"
 
-alias p-mount="cd ${HOME}; sshfs juliet:ENV3 RPYTHON -o auto_cache"
+alias p-mount="cd ${HOME}; sshfs ${JULIET}:ENV3 RPYTHON -o auto_cache"
 alias p-umount="cd ${HOME}; umount RPYTHON"
 
 # ##############################################
@@ -149,17 +150,21 @@ This provides the following commands to you
 On juliet you must include the following in your bashrc file
 
 ```
-if [ "$HOSTNAME" = j-login1 ]; then
-    echo "------"
-else
-    module load cuda/10.1
-    module load cudnn/10.1-v7.6.5
-    export CUDNN_INCLUDE_DIR=/opt/cudnn-10.1-linux-x64-v7.4.1/cuda/include
-    export CUDNN_LIB_DIR=/opt/cudnn-10.1-linux-x64-v7.4.1/cuda/lib64
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/extras/CUPTI/lib64:./N/u/sakkas/softwares/TensorRT-6.0.1.5/targets/x86_64-linux-gnu/lib
+if ! [ "$HOSTNAME" = j-login1 ]; then
+    VCUDA=10.1
+    VCUDNN=v7.6.5
 
-    source $HOME/ENV3/bin/activate
+    VMODULE=10.1-${VCUDNN}
+    module load cuda/${VCUDA}
+    module load cudnn/${VMODULE}
+    export CUDNN_INCLUDE_DIR=/opt/cudnn-${VCUDA}-linux-x64-${VCUDNN}/cuda/include/
+    export CUDNN_LIB_DIR=/opt/cudnn-${VCUDA}-linux-x64-${VCUDNN}/cuda/lib64/
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-${VCUDA}/extras/CUPTI/lib64
+
 fi
+
+
+
 ```
 
 ## SSHFS

@@ -22,11 +22,19 @@ class IuCommand(PluginCommand):
         ::
 
           Usage:
-                iu [--user=USERNAME] [--host=HOST] [--node=NUMBER] [--gpu=GPUS]
-                   [--res=RESERVATION]
+                iu config
+                iu allocate
+                iu ps
+                iu kill
                 iu status
+                iu [--user=USERNAME]
+                   [--host=HOST]
+                   [--node=NUMBER]
+                   [--gpu=GPUS]
+                   [--res=RESERVATION]
                 iu res
                 iu setup --user=USERNAME
+                iu romeo [--user=USERNAME]
 
           This command allows you to inteactively log into roeo or volta
 
@@ -77,6 +85,9 @@ class IuCommand(PluginCommand):
                         user2
         """
         VERBOSE(arguments)
+        config = Config()["cloudmesh.iu"]
+
+
         map_parameters(arguments,
                        "user",
                        "host",
@@ -93,7 +104,12 @@ class IuCommand(PluginCommand):
 
         if arguments.setup:
 
-            iu.setup(user=arguments.user)
+            iu.setup()
+            return ""
+
+        elif arguments.config:
+
+            iu.config(config)
 
             return ""
 
@@ -108,6 +124,41 @@ class IuCommand(PluginCommand):
             iu.reservations(user=arguments.user)
 
             return ""
+
+        elif arguments.allocate:
+
+            iu.allocate(user=arguments.user)
+
+            return ""
+
+        elif arguments.ps:
+
+            found = iu.ps(config)
+            print ("\n".join(found))
+            return ""
+
+        elif arguments.kill:
+
+            found = iu.ps(config)
+            for line in found:
+                line = line.replace("     ", " ")
+                line = line.replace("    ", " ")
+                line = line.replace("   ", " ")
+                line = line.replace("  ", " ")
+                parameter = line.split(" ", 3)
+                if "python" in line:
+                    id = parameter[1]
+                    r = iu.kill(config, id)
+                    print(r)
+            return ""
+
+
+        #elif arguments.romeo(user=arguments.user):
+
+        #    iu.reservations(user=arguments.user)
+
+        #    return ""
+
 
         else:
 

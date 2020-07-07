@@ -11,8 +11,9 @@ import textwrap
 from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.variables import Variables
 import textwrap
-
+from cloudmesh.common.Shell import Shell
 import random
+from cloudmesh.common.Printer import Printer
 
 
 class Manager(object):
@@ -257,3 +258,56 @@ class Manager(object):
                 data[attribute] = value
             r.append(data)
         return r
+
+
+    def allocate(self, user=None):
+        Console.info("romeo allocate")
+        Shell.terminal('ssh -tt juliet salloc -p romeo --reservation=lijguo_11')
+
+    def ps(self, config):
+        Console.info("ps")
+        user = config["user"]
+        host = config["host"]
+
+        command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} ps -aux"'
+        r = Shell.run(command)
+        found = []
+        for line in r.split("\n"):
+            try:
+                if line.startswith(user):
+                    found.append(line)
+            except:
+                pass
+        return found
+
+
+    def kill(self, config, id):
+        user = config["user"]
+        host = config["host"]
+        gpu = config["gpu"]
+
+        command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} kill -9 {id}"'
+        r = Shell.run(command)
+        return r
+
+    def config(self, config):
+        Console.info("config")
+        print (Printer.attribute(config))
+
+        #user = config["user"]
+        #host = config["host"]
+        #gpu = config["gpu"]
+
+
+
+
+    def jupyter(self, kwargs):
+        Console.info("jupyter")
+        config = kwargs
+        print (config)
+
+        user = config["user"]
+        host = config["host"]
+        gpu = config["gpu"]
+
+

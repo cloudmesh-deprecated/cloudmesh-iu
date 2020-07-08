@@ -1,23 +1,21 @@
 # Romeo Tensorflow Installation
 
-
-
 ## Getting an account on juliet
 
 Please get a futuresystems.org account and upload the public key of your
-machine to the portal. If you have issues with thsi please e-mail
-`help@futuresystems.org`. Please note that you must have basic
-understanding about ssh as this is a requirement to login in any
-computer these days. If you do not, please read up on `ssh`, `ssh-keygen`,
+machine to the portal. If you have issues please e-mail
+`help@futuresystems.org`. Please note that you must have a basic
+understanding of ssh as this is a requirement to log in on any computer
+these days. If you do not, please read up on `ssh`, `ssh-keygen`,
 `ssh-add`, `ssh keycahin`.
 
 Test your access while logging into `juliet.futuersystems.org`
 Please note that the account creation takes one business day.
 
-## Request to be added to the the GPU allowed users
+## Request to be added to the GPU allowed users
 
 Please send mail to the GPU allowed users by sending a mail to  
-help@futuresystems.org with your futuresystems username.
+`help@futuresystems.org` with your `futuresystems` username.
 Such as
 
     Please add me to the Romeo users allowed to use GPU's
@@ -27,13 +25,13 @@ Such as
 
 ## Install cloudmesh
 
-To easily access romeo you can use either cloudmesh or manage it via
-bashrc files, or just do it by hand. The later option is discouraged as
-you may need to do it several times and it takes a considerable effort
-to activate for example a `jupyterlab` notebook. We recommend that you
-have python 3.8 or newer installed on your computer. And use the 64 bit
-version. Please download it from python.org. NOte that the default
-version for windows is 32 bit, which does not work, so locate the 64 bit
+To easily access `romeo`, you can use either cloudmesh or manage it via
+bashrc files, or just do it by hand. The latter option is discouraged as
+you may need to do it several times, and it takes a considerable effort
+to activate, for example, a `jupyterlab` notebook. We recommend that you
+have python 3.8 or newer installed on your computer. And use the 64-bit
+version. Please download it from python.org. Note that the default
+version for windows is 32-bit, which does not work, so locate the 64-bit
 version.
 
 ```bash
@@ -41,7 +39,7 @@ $ pip install cloudmesh-installer
 $ cloudmesh-installer install iu
 ```
 
-## Using cloudmesh to access Romeo jupyterlab noteboocks
+## Using cloudmesh to access romeo jupyterlab notebooks
 
 In a terminal execute
 
@@ -50,25 +48,27 @@ $ cms iu allocate
 ```
 
 This gives you an interactive allocation in which you can start
-`jupyterlab` in the background. Next start in a new terminal `jupyterlab` with
+`jupyterlab` in the background. Next start in a new terminal
+`jupyterlab` with
 
 ```bash
 $ cms iu lab
 ```
 
-To connect to it open in a new terminal a port that forwards to the jupyterlab instance
+To connect to it open in a new terminal a port that forwards to the
+jupyterlab instance:
 
 ```bash
 $ cms iu port
 ```
 
-Finally you can say in a terminal on your local machine
+Finally, you can say in a terminal on your local machine:
 
 ```bash
 $ cms iu view
 ```
 
-If you qan to kill the jupyter lab, please use
+If you can to kill the jupyterlab, please use:
 
 ```bash
 $ cms iu kill
@@ -77,16 +77,16 @@ $ cms iu kill
 and start new. Close the windows and start over.
 
 For improvement suggestions, look at the source code  
-and propose changes viw pull requests.
+and propose changes via pull requests.
 
 
 
 
-## Instalation via bashrc scripts
+## Installation via bashrc scripts
 
 This installation is significantly more involved but works for Windows
-machines using gitbash. For all others, we do recommend that you uae the
-cloudmesh instalation
+machines using gitbash. For all others, we do recommend that you use the
+cloudmesh installation
 
 ### Quickstart
 
@@ -95,7 +95,7 @@ the document (this includes setting up your bashrc files, and installing
 tensorflow). We include it here so you have an easy way to remember once
 you have set up your environment how to start a notebook.
 
-Once you have set up the environment as discussed previously you need 3 terminals
+Once you have set up the environment as discussed previously, you need 3 terminals
 
 * terminal 1: ```r-allocate```
 * terminal 2: ```r-jupyter```
@@ -125,7 +125,7 @@ You will see the jupyter notebook
 ### Setup
 
 The setup is a bit complex, follow the instructions carefully. We assume
-you use bash, zsh, or gitbash (in case of Windows). Other shells are not  
+you use bash, zsh, or gitbash (in case of Windows). Other shells are not
 discussed here.
 
 ### Host machine setup
@@ -231,7 +231,8 @@ This provides the following commands to you
 
   This will establish a connection to the notebook
 
-  Next, you can pates and copy the line with http:// and local host into your browser
+  Next, you can pates and copy the line with http:// and local host into
+  your browser
 
 ### Setup `.bashrc` on juliet
 
@@ -258,9 +259,9 @@ fi
 ### SSHFS
 
 Sometimes it is beneficial to use your local browsers to access files
-on romeo. We do this at this time just via juliet and anable sharing
-with sshfs. This tool is avialable for many OSes and you need to install
-it before using.
+on romeo. We do this at this time just via juliet and enable sharing
+with sshfs. This tool is available for many OSes, and you need to install
+it before using it.
 
 Gregor has placed the following additional lines in hos. bashrc file on
 his local computer:
@@ -273,7 +274,7 @@ alias j-umount="cd ${HOME}/Desktop; umount juliet"
 
 Once you say j-mount it mounts the dir juliet:~/share to a local
 directory ~/Desktop/juliet. As the files on juliet are shared with romeo
-they are available also there.
+they are also available there.
 
 In the terminal you simply can say
 

@@ -37,7 +37,33 @@ version.
 ```bash
 $ pip install cloudmesh-installer
 $ cloudmesh-installer install iu
+$ cms help
 ```
+
+After you did the `cms help` command, you need to add the `iu:` block to your cloudmesh.yaml file.
+
+```
+cloudmesh:
+  ...
+  iu:
+    user: gvonlasz
+    host: r-003
+    gpu: 0
+    port: 5888
+```
+
+You will need to modify the values for user to your futuresystems
+username. The host, gpu, and port number will be given to you by the
+person that you will be working with on Romeo.
+
+Please note that when others use the same port number this will not
+work, so make sure you use a port number that is unique. If you find
+conflicts, please negotiate with the other users.
+
+For class use your use of GPU's will be especially regulated and you  
+need to coordinate with your classmates the usage. Research projects  
+typically have priorities and could mean that the access to romeo is  
+limited. In these cases we recommend that you use colab if possible.
 
 ## Using cloudmesh to access romeo jupyterlab notebooks
 

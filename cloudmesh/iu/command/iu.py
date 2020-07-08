@@ -25,10 +25,12 @@ class IuCommand(PluginCommand):
                 iu config
                 iu allocate
                 iu ps
+                iu info
                 iu kill
                 iu status
                 iu lab
                 iu port
+                iu view
                 iu [--user=USERNAME]
                    [--host=HOST]
                    [--node=NUMBER]
@@ -86,7 +88,7 @@ class IuCommand(PluginCommand):
 
                         user2
         """
-        VERBOSE(arguments)
+        #VERBOSE(arguments)
         config = Config()["cloudmesh.iu"]
 
 
@@ -129,7 +131,7 @@ class IuCommand(PluginCommand):
 
         elif arguments.allocate:
 
-            iu.allocate(user=arguments.user)
+            iu.allocate(config)
 
             return ""
 
@@ -138,6 +140,13 @@ class IuCommand(PluginCommand):
             found = iu.ps(config)
             print ("\n".join(found))
             return ""
+
+        elif arguments.info:
+
+            r = iu.info(config)
+            print (Printer.attribute(r))
+            return ""
+
 
         elif arguments.lab:
 
@@ -148,6 +157,11 @@ class IuCommand(PluginCommand):
         elif arguments.port:
 
             found = iu.port(config)
+            return ""
+
+        elif arguments.view:
+
+            found = iu.view(config)
             return ""
 
         elif arguments.kill:

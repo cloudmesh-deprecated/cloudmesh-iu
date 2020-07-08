@@ -14,6 +14,7 @@ import textwrap
 from cloudmesh.common.Shell import Shell
 import random
 from cloudmesh.common.Printer import Printer
+import webbrowser
 
 
 class Manager(object):
@@ -29,6 +30,7 @@ class Manager(object):
         self.user = user
         variables = Variables()
         self.debug = variables["debug"]
+        self.logfile = "jupyterlab.log"
 
         if user is not None:
             self.login = f"{user}@{self.host}"
@@ -260,9 +262,11 @@ class Manager(object):
         return r
 
 
-    def allocate(self, user=None):
+    def allocate(self, config):
+        user = config["user"]
         Console.info("romeo allocate")
-        Shell.terminal('ssh -tt juliet salloc -p romeo --reservation=lijguo_11')
+        command = f'ssh -tt {user}@juliet.futuresystems.org salloc -p romeo --reservation=lijguo_11'
+        Shell.terminal(command)
 
     def ps(self, config):
         Console.info("ps")
@@ -287,6 +291,7 @@ class Manager(object):
         gpu = config["gpu"]
 
         command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} kill -9 {id}"'
+        print (command)
         r = Shell.run(command)
         return r
 
@@ -308,24 +313,45 @@ class Manager(object):
         #host = config["host"]
         #gpu = config["gpu"]
 
-
-
-
     def jupyter(self, config):
         Console.info("jupyter")
         print (config)
 
-        port = 5888
-
         user = config["user"]
         host = config["host"]
         gpu = config["gpu"]
+        port = config["port"]
 
-        command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} nohup jupyter-lab --port {port} --ip 0.0.0.0 --no-browser | tee ~/lab.txt "'
+        command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} nohup jupyter-lab --port {port} --ip 0.0.0.0 --no-browser 2>&1 | tee {self.logfile}"'
 
         print (command)
         os.system(command)
+        #Shell.terminal(command)
         r = None
         #r = Shell.run(command)
         #return r
 
+    def info(self, config):
+        user = config["user"]
+        host = config["host"]
+        gpu = config["gpu"]
+        port = config["port"]
+        command = f"ssh {user}@juliet.futuresystems.org cat {self.logfile}"
+        result = Shell.run(command)
+        try:
+            lines = result.split("\n")
+            url = lines[-2]
+            print (url)
+            url = url.split("or ")[1].strip()
+            r = {}
+            # r["content"] = result
+            r["url"] = url
+        except:
+            Console.error("jupyter lab info not found")
+        return r
+
+
+    def view(self, config):
+
+        info = self.info(config)
+        webbrowser.open(info["url"])

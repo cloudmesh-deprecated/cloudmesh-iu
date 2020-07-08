@@ -1,6 +1,94 @@
 # Romeo Tensorflow Installation
 
-## Quickstart
+
+
+## Getting an account on juliet
+
+Please get a futuresystems.org account and upload the public key of your
+machine to the portal. If you have issues with thsi please e-mail
+`help@futuresystems.org`. Please note that you must have basic
+understanding about ssh as this is a requirement to login in any
+computer these days. If you do not, please read up on `ssh`, `ssh-keygen`,
+`ssh-add`, `ssh keycahin`.
+
+Test your access while logging into `juliet.futuersystems.org`
+Please note that the account creation takes one business day.
+
+## Request to be added to the the GPU allowed users
+
+Please send mail to the GPU allowed users by sending a mail to  
+help@futuresystems.org with your futuresystems username.
+Such as
+
+    Please add me to the Romeo users allowed to use GPU's
+    
+    username: <PUT YOUR USERNAME HERE>
+    reservation: lijguo_11
+
+## Install cloudmesh
+
+To easily access romeo you can use either cloudmesh or manage it via
+bashrc files, or just do it by hand. The later option is discouraged as
+you may need to do it several times and it takes a considerable effort
+to activate for example a `jupyterlab` notebook. We recommend that you
+have python 3.8 or newer installed on your computer. And use the 64 bit
+version. Please download it from python.org. NOte that the default
+version for windows is 32 bit, which does not work, so locate the 64 bit
+version.
+
+```bash
+$ pip install cloudmesh-installer
+$ cloudmesh-installer install iu
+```
+
+## Using cloudmesh to access Romeo jupyterlab noteboocks
+
+In a terminal execute
+
+```bash
+$ cms iu allocate
+```
+
+This gives you an interactive allocation in which you can start
+`jupyterlab` in the background. Next start in a new terminal `jupyterlab` with
+
+```bash
+$ cms iu lab
+```
+
+To connect to it open in a new terminal a port that forwards to the jupyterlab instance
+
+```bash
+$ cms iu port
+```
+
+Finally you can say in a terminal on your local machine
+
+```bash
+$ cms iu view
+```
+
+If you qan to kill the jupyter lab, please use
+
+```bash
+$ cms iu kill
+```
+
+and start new. Close the windows and start over.
+
+For improvement suggestions, look at the source code  
+and propose changes viw pull requests.
+
+
+
+
+## Instalation via bashrc scripts
+
+This installation is significantly more involved but works for Windows
+machines using gitbash. For all others, we do recommend that you uae the
+cloudmesh instalation
+
+### Quickstart
 
 This quickstart assumes you have done all the steps discussed throughout
 the document (this includes setting up your bashrc files, and installing
@@ -17,7 +105,7 @@ Once you have set up the environment as discussed previously you need 3 terminal
 You will see the jupyter notebook
 
 
-## Account
+### Account
 
 * Make sure you get a futuresystems account on
   <https://futuresystems.org>. You will have to declare a project you
@@ -34,13 +122,13 @@ You will see the jupyter notebook
   a system administrator has to activate your account which requires
   sending a help ticket
 
-## Setup
+### Setup
 
 The setup is a bit complex, follow the instructions carefully. We assume
 you use bash, zsh, or gitbash (in case of Windows). Other shells are not  
 discussed here.
 
-## Host machine setup
+### Host machine setup
 
 Place the following in your .bashrc, or .zprofile or .pash_profile
 (depends on your computer):
@@ -145,7 +233,7 @@ This provides the following commands to you
 
   Next, you can pates and copy the line with http:// and local host into your browser
 
-## Setup `.bashrc` on juliet
+### Setup `.bashrc` on juliet
 
 On juliet you must include the following in your bashrc file
 
@@ -167,7 +255,7 @@ fi
 
 ```
 
-## SSHFS
+### SSHFS
 
 Sometimes it is beneficial to use your local browsers to access files
 on romeo. We do this at this time just via juliet and anable sharing
@@ -196,7 +284,7 @@ In the terminal you simply can say
 
 
 
-## Using Romeo
+### Using Romeo
 
 To login you can now say
 
@@ -204,7 +292,7 @@ To login you can now say
 r
 ```
 
-## Check GPU Availability
+### Check GPU Availability
 
 To check the availability of the GPU's say
 
@@ -212,7 +300,7 @@ To check the availability of the GPU's say
 nvidia-smi
 ```
 
-## Test Script
+### Test Script
 
 To test if this all works, please copy the following into a notebook  
 and execute
@@ -250,7 +338,7 @@ GPU Device Names
 /device:GPU:0
 ```
 
-## GPU Test Code
+### GPU Test Code
 
 This test code may run for a long time, so you may want to interrupt
 it after a while. It will put some load on the CUDA Cards and if you
@@ -275,7 +363,7 @@ kill this program and do not run it continuously as the `nvidia-smi`
 program creates unnecessary load if not absolutely needed
 
 
-## Extended GPU Setup On Romeo for Pytorch
+### Extended GPU Setup On Romeo for Pytorch
 
 Using Pytorch to do distributed training with MPI backend is
 documented here

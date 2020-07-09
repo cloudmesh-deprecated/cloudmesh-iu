@@ -15,6 +15,7 @@ from cloudmesh.common.Shell import Shell
 import random
 from cloudmesh.common.Printer import Printer
 import webbrowser
+import time
 
 
 class Manager(object):
@@ -261,12 +262,18 @@ class Manager(object):
             r.append(data)
         return r
 
+    def connect(self, config):
+        print ("connect")
+        os.system("cms iu allocate &")
+        time.sleep(2)
+        os.system("cms iu port &")
 
     def allocate(self, config):
         user = config["user"]
+        reservation = config["reservation"]
         Console.info("romeo allocate")
-        command = f'ssh -tt {user}@juliet.futuresystems.org salloc -p romeo --reservation=lijguo_11'
-        Shell.terminal(command)
+        command = f'ssh -tt {user}@juliet.futuresystems.org salloc -p romeo --reservation={reservation}'
+        Shell.terminal(command, title="reservation")
 
     def ps(self, config):
         Console.info("ps")
@@ -300,8 +307,9 @@ class Manager(object):
         host = config["host"]
         gpu = config["gpu"]
         port = config["port"]
-        command = f"ssh -L {port}:r-003:{port} -i ${port} {user}@juliet.futuresystems.org"
-        os.system(command)
+        command = f"ssh -L {port}:r-003:{port} -i {port} {user}@juliet.futuresystems.org"
+        print (command)
+        Shell.terminal(command, title=f"port {port}")
 
 
 
@@ -312,6 +320,12 @@ class Manager(object):
         #user = config["user"]
         #host = config["host"]
         #gpu = config["gpu"]
+
+    def lab(self, config):
+        os.system("cms iu connect")
+        os.system("cms iu jupyter &")
+        time.sleep(5)
+        self.view(config)
 
     def jupyter(self, config):
         Console.info("jupyter")

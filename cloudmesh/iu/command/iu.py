@@ -22,13 +22,15 @@ class IuCommand(PluginCommand):
         ::
 
           Usage:
+                iu lab
+                iu connect
                 iu config
                 iu allocate
                 iu ps
                 iu info
                 iu kill
                 iu status
-                iu lab
+                iu jupyter
                 iu port
                 iu view
                 iu [--user=USERNAME]
@@ -148,10 +150,15 @@ class IuCommand(PluginCommand):
             return ""
 
 
-        elif arguments.lab:
+        elif arguments.jupyter:
 
             found = iu.jupyter(config)
             # print ("\n".join(found))
+            return ""
+
+        elif arguments.connect:
+
+            found = iu.connect(config)
             return ""
 
         elif arguments.port:
@@ -162,6 +169,11 @@ class IuCommand(PluginCommand):
         elif arguments.view:
 
             found = iu.view(config)
+            return ""
+
+        elif arguments.lab:
+
+            found = iu.lab(config)
             return ""
 
         elif arguments.kill:

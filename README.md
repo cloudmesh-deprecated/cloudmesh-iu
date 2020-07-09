@@ -40,7 +40,8 @@ $ cloudmesh-installer install iu
 $ cms help
 ```
 
-After you did the `cms help` command, you need to add the `iu:` block to your cloudmesh.yaml file.
+After you did the `cms help` command, you need to add the `iu:` block to
+your cloudmesh.yaml file.
 
 ```
 cloudmesh:
@@ -50,6 +51,7 @@ cloudmesh:
     host: r-003
     gpu: 0
     port: 5888
+    reservation: lijguo_11
 ```
 
 You will need to modify the values for user to your futuresystems
@@ -65,7 +67,32 @@ need to coordinate with your classmates the usage. Research projects
 typically have priorities and could mean that the access to romeo is  
 limited. In these cases we recommend that you use colab if possible.
 
-## Using cloudmesh to access romeo jupyterlab notebooks
+
+## One line command to start Jupyter lab
+
+In a terminal execute
+
+```bash
+$ cms iu lab
+```
+
+This command will call a number of cloudmesh commands to allocate a
+reservation on romeo, start port forwarding, start jupyterlab and view
+the jupyter lab in a browser. It opens 2 additional terminals for the
+allocation and port forwarding. To kill all of it, please remove all the
+windows created by the command and call in your terminal
+
+```bash
+$ cms iu kill
+```
+
+## Subcommands for more controll
+
+The one ine command is implemented using a number of subcommands.
+They are explained next. If the one line command works, please use that,  
+otherwise try to use the subcommands.
+
+### Using cloudmesh to access romeo jupyterlab notebooks
 
 In a terminal execute
 

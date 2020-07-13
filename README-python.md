@@ -9,11 +9,12 @@ cd Python-3.7.8
 ./configure --prefix=$HOME/local/python/3.7.8 --enable-optimizations
 make
 make install
-ls $HOME/python/3.7.8/bin/
-$HOME/python/3.7.8/bin/python -m venv ENV37
+cd ~
+./local/python/3.7.8/bin/python3 -m venv ENV37
 ```
 
 Installation will be slw as after the compile over 400 tests are run
+
 
 ## Python 3.8
 
@@ -24,7 +25,8 @@ cd Python-3.8.3
 make
 make install
 ls $HOME/python/3.8.3/bin/
-$HOME/python/3.8.3/bin/python -m venv ENV38
+cd ~
+./local/python/3.8.3/bin/python3 -m venv ENV38
 ```
 
 ## Instalation with pyenv

@@ -15,6 +15,11 @@ cd ~
 
 Installation will be slw as after the compile over 400 tests are run
 
+To activate use
+
+```bash
+source ./ENV37/bin/activate
+```
 
 ## Python 3.8
 
@@ -27,6 +32,12 @@ make install
 ls $HOME/python/3.8.3/bin/
 cd ~
 ./local/python/3.8.3/bin/python3 -m venv ENV38
+```
+
+To activate use
+
+```bash
+source ./ENV38/bin/activate
 ```
 
 ## Instalation with pyenv

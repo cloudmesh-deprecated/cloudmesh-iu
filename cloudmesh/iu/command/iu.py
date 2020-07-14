@@ -22,16 +22,16 @@ class IuCommand(PluginCommand):
         ::
 
           Usage:
-                iu lab
-                iu connect
+                iu lab [--port=PORT]
+                iu connect [--port=PORT]
                 iu config
                 iu allocate
                 iu ps
                 iu info
                 iu kill
                 iu status
-                iu jupyter
-                iu port
+                iu jupyter [--port=PORT]
+                iu port [--port=PORT]
                 iu view
                 iu [--user=USERNAME]
                    [--host=HOST]
@@ -92,7 +92,9 @@ class IuCommand(PluginCommand):
         """
         #VERBOSE(arguments)
         config = Config()["cloudmesh.iu"]
+        config["port"] = arguments["--port"] or config["port"]
 
+        #pprint (config)
 
         map_parameters(arguments,
                        "user",
@@ -106,7 +108,7 @@ class IuCommand(PluginCommand):
         #    config = Config()
         #    arguments.user = config["cloudmesh.iu.user"]
 
-        iu = Manager(user=arguments.user)
+        iu = Manager(config=config)
 
         if arguments.setup:
 
@@ -163,7 +165,7 @@ class IuCommand(PluginCommand):
 
         elif arguments.port:
 
-            found = iu.port(config)
+            found = iu.set_port(config)
             return ""
 
         elif arguments.view:
@@ -172,6 +174,7 @@ class IuCommand(PluginCommand):
             return ""
 
         elif arguments.lab:
+
 
             found = iu.lab(config)
             return ""

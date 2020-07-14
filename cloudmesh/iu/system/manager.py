@@ -25,16 +25,22 @@ class Manager(object):
     volta         up   infinite      2  gpu:8    mix r-[005-006]
     """
 
-    def __init__(self, user=None):
+    def __init__(self, config=None):
         self.hostname = "juliet.futuresystems.org"
-        self.host = "juliet"
-        self.user = user
+        self.tunnel_host = "juliet"
+
+        self.user = config["user"]
+        self.port = config["port"]
+        self.host = config["host"]
+        self.gpu = config["gpu"]
+
+
         variables = Variables()
         self.debug = variables["debug"]
         self.logfile = "jupyterlab.log"
 
-        if user is not None:
-            self.login = f"{user}@{self.host}"
+        if self.user is not None:
+            self.login = f"{self.user}@{self.tunnel_host}"
 
     def DEBUG(self, *args):
         if self.debug:
@@ -70,7 +76,7 @@ class Manager(object):
               node=1,
               gpus=1):
 
-        command = f"ssh -t {self.host} " \
+        command = f"ssh -t {self.tunnel_host} " \
                   f" srun -p {host}" \
                   f" -w {node} --gres gpu:{gpus} --pty bash"
         print(command)
@@ -214,14 +220,14 @@ class Manager(object):
                             header=["Host", "Users"]))
 
     def users(self, host=None, user=None):
-        command = f"ssh -o LogLevel=QUIET -t {self.host} " \
+        command = f"ssh -o LogLevel=QUIET -t {self.tunnel_host} " \
                   f" squeue -p {host} -o \"%u\""
         r = check_output(command, shell=True).decode('ascii').split()[1:]
         r = sorted(set(r))
         return r
 
     def queue(self, host=None, user=None):
-        command = f"ssh -o LogLevel=QUIET -t {self.host} " \
+        command = f"ssh -o LogLevel=QUIET -t {self.tunnel_host} " \
                   f" squeue -p {host}"
 
         self.DEBUG(command)
@@ -249,7 +255,7 @@ class Manager(object):
         return used
 
     def reservations(self, user=None):
-        command = f"ssh -o LogLevel=QUIET -t {self.host} " \
+        command = f"ssh -o LogLevel=QUIET -t {self.tunnel_host} " \
                   f" scontrol -a -d -o show res"
         result = check_output(command, shell=True).decode('ascii').splitlines()
         r = []
@@ -266,7 +272,8 @@ class Manager(object):
         print ("connect")
         os.system("cms iu allocate &")
         time.sleep(2)
-        os.system("cms iu port &")
+        port = config["port"]
+        os.system(f"cms iu port --port={port}&")
 
     def allocate(self, config):
         user = config["user"]
@@ -302,7 +309,7 @@ class Manager(object):
         r = Shell.run(command)
         return r
 
-    def port(self, config):
+    def set_port(self, config):
         user = config["user"]
         host = config["host"]
         gpu = config["gpu"]
@@ -322,8 +329,9 @@ class Manager(object):
         #gpu = config["gpu"]
 
     def lab(self, config):
-        os.system("cms iu connect")
-        os.system("cms iu jupyter &")
+        port = config["port"]
+        os.system(f"cms iu connect --port={port}")
+        os.system(f"cms iu jupyter --port={port}&")
         time.sleep(5)
         self.view(config)
 
@@ -336,7 +344,7 @@ class Manager(object):
         gpu = config["gpu"]
         port = config["port"]
 
-        command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} nohup jupyter-lab --port {port} --ip 0.0.0.0 --no-browser 2>&1 | tee {self.logfile}"'
+        command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} nohup jupyter-lab --port {port} --ip 0.0.0.0 --no-browser 2>&1 | tee {self.logfile}-{port}"'
 
         print (command)
         os.system(command)
@@ -350,7 +358,7 @@ class Manager(object):
         host = config["host"]
         gpu = config["gpu"]
         port = config["port"]
-        command = f"ssh {user}@juliet.futuresystems.org cat {self.logfile}"
+        command = f"ssh {user}@juliet.futuresystems.org cat {self.logfile}-{port}"
         result = Shell.run(command)
         try:
             lines = result.split("\n")

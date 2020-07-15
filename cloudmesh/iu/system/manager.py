@@ -368,9 +368,10 @@ class Manager(object):
             r = {}
             # r["content"] = result
             r["url"] = url
+            return r
         except:
             Console.error("jupyter lab info not found")
-        return r
+
 
 
     def view(self, config):

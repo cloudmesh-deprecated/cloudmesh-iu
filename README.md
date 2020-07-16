@@ -35,8 +35,8 @@ version for windows is 32-bit, which does not work, so locate the 64-bit
 version.
 
 ```bash
-$ pip install cloudmesh-installer
-$ cloudmesh-installer install iu
+$ pip install cloudmesh-installer -U
+$ cloudmesh-installer install iu 
 $ cms help
 ```
 

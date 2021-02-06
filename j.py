@@ -8,6 +8,7 @@ from queue import Queue, Empty
 import time
 import os
 import shlex
+
 host = "r-003"
 port = 9010
 
@@ -17,10 +18,10 @@ command = f'ssh juliet "ssh {host} ./ENV3/bin/jupyter-lab --ip localhost --port 
 # command = f'jupyter-lab --ip localhost --port {port} --no-browser'
 
 
-localcommand = "ssh -L 9000:{host}:9000 -i {file} juliet" # juliet = <username>@juliet.futuresystems.org
+localcommand = "ssh -L 9000:{host}:9000 -i {file} juliet"  # juliet = <username>@juliet.futuresystems.org
+
 
 def live(command):
-
     file = None
     localhost = None
     process = subprocess.Popen(shlex.split(command),
@@ -42,9 +43,10 @@ def live(command):
             printed = True
             # start jupyter
             jupyter = localcommand.format(host=host, file=file)
-            print (jupyter)
+            print(jupyter)
             os.system(jupyter)
     rc = process.poll()
+
 
 live(command)
 

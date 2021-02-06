@@ -34,7 +34,6 @@ class Manager(object):
         self.host = config["host"]
         self.gpu = config["gpu"]
 
-
         variables = Variables()
         self.debug = variables["debug"]
         self.logfile = "jupyterlab.log"
@@ -172,7 +171,7 @@ class Manager(object):
                                 'NodeCnt'
 
                             ],
-                            #header=[
+                            # header=[
                             #    'Nodes',
                             #    'Reservation',
                             #    'State',
@@ -180,7 +179,7 @@ class Manager(object):
                             #    'Cores (CPUs)',
                             #    'Flags',
                             #    'No.Nodes'
-                            #]
+                            # ]
                             ))
 
         reserved = self.reserved_nodes(user=user)
@@ -232,8 +231,7 @@ class Manager(object):
 
         self.DEBUG(command)
 
-        lines = check_output(command, shell=True).decode('ascii') \
-                    .splitlines()[1:]
+        lines = check_output(command, shell=True).decode('ascii').splitlines()[1:]
 
         used = {}
 
@@ -269,7 +267,7 @@ class Manager(object):
         return r
 
     def connect(self, config):
-        print ("connect")
+        print("connect")
         os.system("cms iu allocate &")
         time.sleep(2)
         port = config["port"]
@@ -298,14 +296,13 @@ class Manager(object):
                 pass
         return found
 
-
     def kill(self, config, id):
         user = config["user"]
         host = config["host"]
         gpu = config["gpu"]
 
         command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} kill -9 {id}"'
-        print (command)
+        print(command)
         r = Shell.run(command)
         return r
 
@@ -315,18 +312,16 @@ class Manager(object):
         gpu = config["gpu"]
         port = config["port"]
         command = f"ssh -L {port}:r-003:{port} -i {port} {user}@juliet.futuresystems.org"
-        print (command)
+        print(command)
         Shell.terminal(command, title=f"port {port}")
-
-
 
     def config(self, config):
         Console.info("config")
-        print (Printer.attribute(config))
+        print(Printer.attribute(config))
 
-        #user = config["user"]
-        #host = config["host"]
-        #gpu = config["gpu"]
+        # user = config["user"]
+        # host = config["host"]
+        # gpu = config["gpu"]
 
     def lab(self, config):
         port = config["port"]
@@ -337,7 +332,7 @@ class Manager(object):
 
     def jupyter(self, config):
         Console.info("jupyter")
-        print (config)
+        print(config)
 
         user = config["user"]
         host = config["host"]
@@ -346,12 +341,12 @@ class Manager(object):
 
         command = f'ssh -tt {user}@juliet.futuresystems.org "ssh {host} nohup jupyter-lab --port {port} --ip 0.0.0.0 --no-browser 2>&1 | tee {self.logfile}-{port}"'
 
-        print (command)
+        print(command)
         os.system(command)
-        #Shell.terminal(command)
+        # Shell.terminal(command)
         r = None
-        #r = Shell.run(command)
-        #return r
+        # r = Shell.run(command)
+        # return r
 
     def info(self, config):
         user = config["user"]
@@ -363,7 +358,7 @@ class Manager(object):
         try:
             lines = result.split("\n")
             url = lines[-2]
-            print (url)
+            print(url)
             url = url.split("or ")[1].strip()
             r = {}
             # r["content"] = result
@@ -371,8 +366,6 @@ class Manager(object):
             return r
         except:
             Console.error("jupyter lab info not found")
-
-
 
     def view(self, config):
 

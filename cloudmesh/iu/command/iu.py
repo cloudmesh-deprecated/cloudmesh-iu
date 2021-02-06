@@ -13,6 +13,7 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.configuration.Config import Config
 import random
 
+
 class IuCommand(PluginCommand):
 
     # noinspection PyUnusedLocal
@@ -90,11 +91,11 @@ class IuCommand(PluginCommand):
 
                         user2
         """
-        #VERBOSE(arguments)
+        # VERBOSE(arguments)
         config = Config()["cloudmesh.iu"]
         config["port"] = arguments["--port"] or config["port"]
 
-        #pprint (config)
+        # pprint (config)
 
         map_parameters(arguments,
                        "user",
@@ -103,7 +104,7 @@ class IuCommand(PluginCommand):
                        "gpu")
 
         variables = Variables()
-        #arguments["user"] = Parameter.find("user", arguments, variables)
+        # arguments["user"] = Parameter.find("user", arguments, variables)
         # if arguments.user is None:
         #    config = Config()
         #    arguments.user = config["cloudmesh.iu.user"]
@@ -142,13 +143,13 @@ class IuCommand(PluginCommand):
         elif arguments.ps:
 
             found = iu.ps(config)
-            print ("\n".join(found))
+            print("\n".join(found))
             return ""
 
         elif arguments.info:
 
             r = iu.info(config)
-            print (Printer.attribute(r))
+            print(Printer.attribute(r))
             return ""
 
 
@@ -175,7 +176,6 @@ class IuCommand(PluginCommand):
 
         elif arguments.lab:
 
-
             found = iu.lab(config)
             return ""
 
@@ -195,12 +195,11 @@ class IuCommand(PluginCommand):
             return ""
 
 
-        #elif arguments.romeo(user=arguments.user):
+        # elif arguments.romeo(user=arguments.user):
 
         #    iu.reservations(user=arguments.user)
 
         #    return ""
-
 
         else:
 
@@ -214,7 +213,7 @@ class IuCommand(PluginCommand):
 
             banner(f"Login {arguments.host}")
 
-            #iu.login(user=arguments.user,
+            # iu.login(user=arguments.user,
             #               host=arguments.host,
             #               node=arguments.node,
             #               gpus=arguments.gpu)

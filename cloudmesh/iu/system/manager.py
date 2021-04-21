@@ -59,7 +59,7 @@ class Manager(object):
             Host {label}
                 Hostname {host}
                 User {user}
-                IdentityFile ~/.ssh/id_rsa.pub
+                IdentityFile ~/.ssh/id_rsa
             """)
             Console.info(f"adding {label} to ~/.ssh/config\n" +
                          textwrap.indent(entry, prefix="    "))
